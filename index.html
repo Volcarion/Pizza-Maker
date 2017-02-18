@@ -1,0 +1,66 @@
+<html ng-app="PizzaMaker">
+    <head>
+        <title>Pizza Maker</title>
+        <script src="https://code.angularjs.org/1.6.2/angular.min.js"></script>
+        <script src="app.js"></script>
+        <link rel="stylesheet" type="text/css" href="Styles.css" />
+        <!-- Idea about how to edit from http://stackoverflow.com/questions/26741166/angular-update-object-in-array -->
+    </head>
+    <body ng-controller="PizzaMakerController as pmc">
+        <div style="margin:auto; width:600px">
+        <h3 style="text-align:center">Create A Pizza</h3>
+        <table>
+            <tr>
+                <th style="padding:10px; color:steelblue; border-color: black; background-color:black; text-align:center">Pick your size</th>
+                <th style="padding:10px; color:steelblue; border-color: black; background-color:black; text-align:center">Choose up to 3 toppings</th>
+            </tr>
+            <tr>
+                <td style="padding:10px; color:black; border-color: black; background-color:black; text-align:center">
+                    <select ng-model="pmc.size" ng-options="s.code for s in pmc.sizes"></select>
+                </td>
+                <td style="padding:10px; color:black; border-color: black; background-color:black">
+                    <select ng-model="pmc.topping1" ng-options="t.name for t in pmc.topping_list"></select>
+                    <select ng-model="pmc.topping2" ng-options="t.name for t in pmc.topping_list"></select>
+                    <select ng-model="pmc.topping3" ng-options="t.name for t in pmc.topping_list"></select>
+                </td>
+            </tr>
+        </table>
+        <br/>
+        <br/>
+            <table ng-if="pmc.pizzas != null" class="table-bordered" style="margin-left:10px">
+                <tr>
+                    <th colspan="4" style="text-align:center; border-bottom: 2px solid steelblue; background-color:black">Pizza List</th>
+                    <th colspan="3" style="background-color:black"></th>
+                </tr>
+
+                <tr ng-repeat="pizza in pmc.pizzas" id="pizza{{$index}}" >
+                    <td style="padding:10px; height:50px; background-color:#566D7E;">
+                        {{pizza.size}}
+                    </td>
+                    <td style="padding:10px; height:50px; background-color:#566D7E;">
+                        {{pizza.t1}} <br/> {{pizza.t2}} <br/> {{pizza.t3}}
+                    </td>
+                    <td style="padding:10px; height:50px; background-color:#566D7E;">
+                        <button ng-click="pmc.remove($index)" class="btn-danger">Delete</button>
+                    </td>
+                    <td style="padding:10px; height:50px; background-color:#566D7E;">
+                        <button ng-click="newSize = pizza.size; showEdit = true" class="btn-warning">Edit</button>
+                    </td>
+                    <td ng-show="showEdit" style="padding:10px; color:black; border-color: black; background-color:black">
+                        <p style="color:steelblue; text-align:center">New Size</p><select ng-model="newSize" ng-options="s.code for s in pmc.sizes"> </select>
+                    </td>
+                    <td ng-show="showEdit" style="padding:10px; color:black; border-color: black; background-color:black">
+                        <p style="color:steelblue; text-align:center">New Toppings</p><select ng-model="newTopping1" ng-options="t.name for t in pmc.topping_list"></select><br/>
+                            <select ng-model="newTopping2" ng-options="t.name for t in pmc.topping_list"></select><br/>
+                            <select ng-model="newTopping3" ng-options="t.name for t in pmc.topping_list"></select>
+                    </td>
+                    <td ng-show="showEdit" style="padding:10px; color:black; border-color: black; background-color:black">
+                        <input type="button" class="btn-success" value="Submit" ng-click="pmc.edit(pizza, newSize.name, newTopping1.name, newTopping2.name, newTopping3.name); showEdit = false;">
+                    </td>
+                </tr>
+            </table>
+            <br/>
+    <input style="margin-left:10px" type="button" class="btn-primary" value="Update" ng-click="pmc.update(pmc.size.name, pmc.topping1.name, pmc.topping2.name, pmc.topping3.name)" /> 
+    </div>
+    </body>
+</html>
